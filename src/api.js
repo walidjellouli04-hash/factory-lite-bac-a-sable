@@ -16,7 +16,7 @@ export function handleGet(state, id) {
 }
 
 // Champs effectivement enregistres a la creation d'une visite.
-const CHAMPS_ENREGISTRES = ["client", "ville", "date", "statut"];
+const CHAMPS_ENREGISTRES = ["client", "ville", "date", "statut", "compteRendu"];
 
 export function handleCreate(state, entree) {
   const controle = validateVisite(entree);
