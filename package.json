@@ -1,0 +1,12 @@
+{
+  "name": "carnet-visites",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Carnet de visites commerciales — API + front. Zéro dépendance.",
+  "scripts": {
+    "test": "node --test",
+    "start": "node server.js"
+  },
+  "engines": { "node": ">=20" }
+}

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carnet de visites</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <h1>Carnet de visites</h1>
+    <p class="sous-titre">Suivi des visites commerciales sur le terrain</p>
+  </header>
+
+  <main>
+    <section class="carte">
+      <h2>Nouvelle visite</h2>
+      <form id="formulaire" novalidate>
+        <div class="champs">
+          <label>Client <input name="client" required minlength="2" placeholder="Mairie de …"></label>
+          <label>Ville <input name="ville" required minlength="2" placeholder="Tours"></label>
+          <label>Date <input name="date" type="date" required></label>
+          <label>Statut
+            <select name="statut">
+              <option value="planifiee">Planifiée</option>
+              <option value="realisee">Réalisée</option>
+              <option value="annulee">Annulée</option>
+            </select>
+          </label>
+        </div>
+        <label class="pleine">Compte rendu
+          <textarea name="compteRendu" rows="2" maxlength="500" placeholder="Optionnel"></textarea>
+        </label>
+        <button type="submit">Enregistrer la visite</button>
+        <p id="erreurs" class="erreurs" hidden></p>
+      </form>
+    </section>
+
+    <section class="carte">
+      <h2>Visites <span id="compteur" class="compteur">0</span></h2>
+      <ul id="liste" class="liste"></ul>
+    </section>
+  </main>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

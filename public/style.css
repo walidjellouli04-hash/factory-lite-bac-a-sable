@@ -1,0 +1,48 @@
+:root {
+  --encre: #17202a; --gris: #5b6670; --trait: #dfe4e8; --fond: #f6f8f9;
+  --accent: #1f6f8b; --vert: #2f7d5a; --rouge: #a03434;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 0 1.25rem 3rem; background: var(--fond); color: var(--encre);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+header { max-width: 780px; margin: 0 auto; padding: 2.25rem 0 1.5rem; }
+h1 { margin: 0; font-size: 1.6rem; letter-spacing: -0.01em; }
+.sous-titre { margin: 0.3rem 0 0; color: var(--gris); }
+main { max-width: 780px; margin: 0 auto; display: grid; gap: 1.25rem; }
+.carte { background: #fff; border: 1px solid var(--trait); border-radius: 10px; padding: 1.25rem; }
+h2 { margin: 0 0 1rem; font-size: 1.05rem; text-transform: uppercase;
+     letter-spacing: 0.06em; color: var(--gris); }
+.compteur { display: inline-block; min-width: 1.6rem; padding: 0 0.4rem; border-radius: 99px;
+            background: var(--fond); border: 1px solid var(--trait); color: var(--encre);
+            font-size: 0.8rem; text-align: center; }
+.champs { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.75rem; }
+label { display: grid; gap: 0.3rem; font-size: 0.85rem; color: var(--gris); }
+label.pleine { margin-top: 0.75rem; }
+input, select, textarea {
+  font: inherit; padding: 0.5rem 0.6rem; border: 1px solid var(--trait);
+  border-radius: 6px; background: #fff; color: var(--encre);
+}
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+button {
+  margin-top: 1rem; font: inherit; font-weight: 600; padding: 0.55rem 1rem;
+  border: 0; border-radius: 6px; background: var(--accent); color: #fff; cursor: pointer;
+}
+button:hover { filter: brightness(1.08); }
+.erreurs { margin: 0.75rem 0 0; padding: 0.6rem 0.75rem; border-radius: 6px;
+           background: #fdf2f2; color: var(--rouge); font-size: 0.85rem; }
+.liste { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+.visite { position: relative; border: 1px solid var(--trait); border-radius: 8px; padding: 0.8rem 0.9rem; }
+.visite-tete { display: flex; align-items: center; gap: 0.5rem; }
+.visite-meta { color: var(--gris); font-size: 0.85rem; margin-top: 0.15rem; }
+.visite-cr { margin: 0.5rem 0 0; font-size: 0.9rem; }
+.badge { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+         padding: 0.15rem 0.45rem; border-radius: 99px; border: 1px solid currentColor; }
+.badge-planifiee { color: var(--accent); }
+.badge-realisee  { color: var(--vert); }
+.badge-annulee   { color: var(--rouge); }
+.supprimer { position: absolute; top: 0.6rem; right: 0.6rem; margin: 0; padding: 0.25rem 0.5rem;
+             background: transparent; color: var(--gris); border: 1px solid var(--trait);
+             font-size: 0.75rem; font-weight: 500; }
+.supprimer:hover { color: var(--rouge); border-color: var(--rouge); filter: none; }
