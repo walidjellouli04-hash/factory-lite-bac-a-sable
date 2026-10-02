@@ -4,19 +4,22 @@
 import { addVisite, getVisite, listVisites, removeVisite } from "./store.js";
 import { validateVisite } from "./validate.js";
 
+// Une visite sans priorité (antérieure au champ) compte comme normale, sans toucher au state.
+const avecPriorite = (visite) => ({ priorite: "normale", ...visite });
+
 export function handleList(state) {
-  return { state, status: 200, body: { visites: listVisites(state) } };
+  return { state, status: 200, body: { visites: listVisites(state).map(avecPriorite) } };
 }
 
 export function handleGet(state, id) {
   const visite = getVisite(state, id);
   return visite
-    ? { state, status: 200, body: visite }
+    ? { state, status: 200, body: avecPriorite(visite) }
     : { state, status: 404, body: { erreur: "visite introuvable" } };
 }
 
 // Champs effectivement enregistres a la creation d'une visite.
-const CHAMPS_ENREGISTRES = ["client", "ville", "date", "statut", "compteRendu"];
+const CHAMPS_ENREGISTRES = ["client", "ville", "date", "statut", "priorite", "compteRendu"];
 
 export function handleCreate(state, entree) {
   const controle = validateVisite(entree);

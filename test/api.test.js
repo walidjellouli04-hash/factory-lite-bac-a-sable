@@ -64,3 +64,35 @@ describe("api : compte rendu enrichi", () => {
     assert.equal(r.body.compteRendu, "&lt;img src=x onerror=alert(1)&gt;");
   });
 });
+
+import { addVisite } from "../src/store.js";
+
+describe("api : priorite", () => {
+  it("enregistre et rend la priorite", () => {
+    const r = handleCreate(emptyState(), { ...VALIDE, priorite: "haute" });
+    assert.equal(r.status, 201);
+    assert.equal(r.body.priorite, "haute");
+    assert.equal(handleList(r.state).body.visites[0].priorite, "haute");
+  });
+
+  it("applique normale par defaut a la creation", () => {
+    assert.equal(handleCreate(emptyState(), VALIDE).body.priorite, "normale");
+  });
+
+  it("refuse une priorite inconnue en 400 sans toucher l'etat", () => {
+    const etat = emptyState();
+    const r = handleCreate(etat, { ...VALIDE, priorite: "critique" });
+    assert.equal(r.status, 400);
+    assert.equal(r.body.erreur, "validation");
+    assert.equal(r.state, etat);
+  });
+
+  it("rend normale pour une visite ancienne sans priorite, sans la muter", () => {
+    const etat = addVisite(emptyState(), {
+      client: "Mairie", ville: "Tours", date: "2026-09-30", statut: "planifiee", compteRendu: "",
+    }).state;
+    assert.equal(handleList(etat).body.visites[0].priorite, "normale");
+    assert.equal(handleGet(etat, 1).body.priorite, "normale");
+    assert.equal("priorite" in etat.visites[0], false);
+  });
+});
