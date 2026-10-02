@@ -53,6 +53,10 @@ div.pleine { margin-top: 0.75rem; font-size: 0.85rem; color: var(--gris); }
 .badge-planifiee { color: var(--accent); }
 .badge-realisee  { color: var(--vert); }
 .badge-annulee   { color: var(--rouge); }
+.pastille { font-size: 0.72rem; font-weight: 600; padding: 0.15rem 0.45rem; border-radius: 99px; }
+.pastille-basse   { background: var(--fond); color: var(--gris); border: 1px solid var(--trait); }
+.pastille-normale { background: #e8f1f4; color: var(--accent); }
+.pastille-haute   { background: #fdf2f2; color: var(--rouge); }
 .supprimer { position: absolute; top: 0.6rem; right: 0.6rem; margin: 0; padding: 0.25rem 0.5rem;
              background: transparent; color: var(--gris); border: 1px solid var(--trait);
              font-size: 0.75rem; font-weight: 500; }

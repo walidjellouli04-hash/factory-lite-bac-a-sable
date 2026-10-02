@@ -2,6 +2,7 @@
 
 const $ = (sel) => document.querySelector(sel);
 const LIBELLE_STATUT = { planifiee: "Planifiée", realisee: "Réalisée", annulee: "Annulée" };
+const LIBELLE_PRIORITE = { basse: "Basse", normale: "Normale", haute: "Haute" };
 
 const formaterDate = (iso) => {
   const [a, m, j] = String(iso).split("-");
@@ -13,10 +14,13 @@ const formaterDate = (iso) => {
 function ligne(visite) {
   const li = document.createElement("li");
   li.className = "visite";
+  // Repli sur les valeurs connues : seul du texte maîtrisé arrive dans class et dans le libellé.
+  const priorite = LIBELLE_PRIORITE[visite.priorite] ? visite.priorite : "normale";
   li.innerHTML = `
     <div class="visite-tete">
       <strong>${escape(visite.client)}</strong>
       <span class="badge badge-${visite.statut}">${LIBELLE_STATUT[visite.statut] ?? visite.statut}</span>
+      <span class="pastille pastille-${priorite}" title="Priorité">Priorité ${LIBELLE_PRIORITE[priorite]}</span>
     </div>
     <div class="visite-meta">${escape(visite.ville)} · ${formaterDate(visite.date)}</div>
     ${visite.compteRendu ? `<p class="visite-cr">${visite.compteRendu}</p>` : ""}
