@@ -2,6 +2,8 @@
 
 export const STATUTS = ["planifiee", "realisee", "annulee"];
 
+export const PRIORITES = ["basse", "normale", "haute"];
+
 export const COULEURS_CR = ["rouge", "bleu", "vert", "orange"];
 
 const texte = (v) => (typeof v === "string" ? v.trim() : "");
@@ -57,6 +59,10 @@ export function validateVisite(entree) {
   const ville = texte(o.ville);
   const date = texte(o.date);
   const statut = texte(o.statut) || "planifiee";
+  // Absente (ou vide) => normale ; une valeur non textuelle est refusée plutôt qu'ignorée.
+  const priorite = typeof o.priorite === "string"
+    ? o.priorite.trim() || "normale"
+    : (o.priorite ?? "normale");
   const brut = texte(o.compteRendu);
   const cr = normaliserCompteRendu(brut);
 
@@ -64,11 +70,12 @@ export function validateVisite(entree) {
   if (ville.length < 2) erreurs.push("ville : 2 caractères minimum");
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) erreurs.push("date : format attendu AAAA-MM-JJ");
   if (!STATUTS.includes(statut)) erreurs.push(`statut : valeurs admises ${STATUTS.join(", ")}`);
+  if (!PRIORITES.includes(priorite)) erreurs.push(`priorite : valeurs admises ${PRIORITES.join(", ")}`);
   erreurs.push(...cr.erreurs);
   if (cr.longueurVisible > 500) erreurs.push("compteRendu : 500 caractères maximum");
   if (brut.length > 5000) erreurs.push("compteRendu : contenu trop volumineux");
 
   return erreurs.length
     ? { ok: false, erreurs }
-    : { ok: true, valeur: { client, ville, date, statut, compteRendu: cr.html } };
+    : { ok: true, valeur: { client, ville, date, statut, priorite, compteRendu: cr.html } };
 }

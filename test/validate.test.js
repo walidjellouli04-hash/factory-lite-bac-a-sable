@@ -107,3 +107,33 @@ describe("validate : compte rendu enrichi", () => {
     assert.ok(r.erreurs.includes("compteRendu : contenu trop volumineux"));
   });
 });
+
+import { PRIORITES } from "../src/validate.js";
+
+describe("validate : priorite", () => {
+  it("vaut normale quand le champ est absent", () => {
+    const r = validateVisite(VALIDE);
+    assert.equal(r.ok, true);
+    assert.equal(r.valeur.priorite, "normale");
+  });
+
+  it("accepte chaque priorite admise a l'identique", () => {
+    for (const p of PRIORITES) {
+      const r = validateVisite({ ...VALIDE, priorite: p });
+      assert.equal(r.ok, true);
+      assert.equal(r.valeur.priorite, p);
+    }
+  });
+
+  it("nettoie les espaces autour de la valeur", () => {
+    assert.equal(validateVisite({ ...VALIDE, priorite: " haute " }).valeur.priorite, "haute");
+  });
+
+  it("refuse les valeurs inconnues", () => {
+    for (const p of ["urgente", "HAUTE", 42]) {
+      const r = validateVisite({ ...VALIDE, priorite: p });
+      assert.equal(r.ok, false);
+      assert.ok(r.erreurs.some((e) => e.startsWith("priorite :")));
+    }
+  });
+});
