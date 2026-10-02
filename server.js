@@ -5,7 +5,7 @@ import http from "node:http";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { handleCreate, handleDelete, handleGet, handleList } from "./src/api.js";
+import { handleCreate, handleDelete, handleGet, handleList, handleStatistiques } from "./src/api.js";
 import { seededState } from "./src/seed.js";
 import { cheminDemande } from "./src/statique.js";
 
@@ -54,6 +54,9 @@ const serveur = http.createServer(async (req, res) => {
 
   if (chemin === "/api/visites" && req.method === "GET") {
     const r = handleList(etat); etat = r.state; return envoyer(res, r.status, r.body);
+  }
+  if (chemin === "/api/visites/statistiques" && req.method === "GET") {
+    const r = handleStatistiques(etat); etat = r.state; return envoyer(res, r.status, r.body);
   }
   if (chemin === "/api/visites" && req.method === "POST") {
     const corps = await lireCorps(req);

@@ -2,10 +2,19 @@
 // Aucun objet HTTP ici — c'est ce qui rend les tests lisibles et rapides.
 
 import { addVisite, getVisite, listVisites, removeVisite } from "./store.js";
-import { validateVisite } from "./validate.js";
+import { STATUTS, validateVisite } from "./validate.js";
 
 export function handleList(state) {
   return { state, status: 200, body: { visites: listVisites(state) } };
+}
+
+export function handleStatistiques(state) {
+  const visites = listVisites(state);
+  const parStatut = Object.fromEntries(STATUTS.map((statut) => [statut, 0]));
+  for (const { statut } of visites) {
+    if (statut in parStatut) parStatut[statut] += 1;
+  }
+  return { state, status: 200, body: { total: visites.length, parStatut } };
 }
 
 export function handleGet(state, id) {
