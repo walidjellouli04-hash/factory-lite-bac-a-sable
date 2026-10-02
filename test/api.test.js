@@ -58,6 +58,11 @@ describe("api : compte rendu enrichi", () => {
     assert.equal(handleGet(r.state, 1).body.compteRendu, HTML);
   });
 
+  it("rend le compte rendu dans la liste des visites creees", () => {
+    const r = handleCreate(emptyState(), { ...VALIDE, compteRendu: HTML });
+    assert.equal(handleList(r.state).body.visites[0].compteRendu, HTML);
+  });
+
   it("enregistre echappe un compte rendu avec balise non autorisee", () => {
     const r = handleCreate(emptyState(), { ...VALIDE, compteRendu: "<img src=x onerror=alert(1)>" });
     assert.equal(r.status, 201);
