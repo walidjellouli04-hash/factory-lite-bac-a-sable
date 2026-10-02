@@ -28,9 +28,18 @@
             </select>
           </label>
         </div>
-        <label class="pleine">Compte rendu
-          <textarea name="compteRendu" rows="2" maxlength="500" placeholder="Optionnel"></textarea>
-        </label>
+        <div class="pleine">
+          <span id="libelle-cr">Compte rendu</span>
+          <div class="barre-cr" role="toolbar" aria-label="Mise en forme">
+            <button type="button" class="outil" data-action="souligner" aria-label="Souligner"><u>S</u></button>
+            <button type="button" class="outil cr-rouge" data-couleur="rouge" aria-label="Rouge">A</button>
+            <button type="button" class="outil cr-bleu" data-couleur="bleu" aria-label="Bleu">A</button>
+            <button type="button" class="outil cr-vert" data-couleur="vert" aria-label="Vert">A</button>
+            <button type="button" class="outil cr-orange" data-couleur="orange" aria-label="Orange">A</button>
+          </div>
+          <div id="editeur-cr" class="editeur-cr" contenteditable="true" role="textbox" aria-multiline="true" aria-labelledby="libelle-cr"></div>
+          <input type="hidden" name="compteRendu">
+        </div>
         <button type="submit">Enregistrer la visite</button>
         <p id="erreurs" class="erreurs" hidden></p>
       </form>

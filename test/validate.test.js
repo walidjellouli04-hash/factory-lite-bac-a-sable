@@ -54,3 +54,56 @@ describe("validate", () => {
     assert.equal(r.erreurs.length, 4);
   });
 });
+
+describe("validate : compte rendu enrichi", () => {
+  const cr = (compteRendu) => validateVisite({ ...VALIDE, compteRendu });
+
+  it("conserve <u>, <span class=cr-X> et <br>", () => {
+    const html = 'a <u>b</u> <span class="cr-rouge">c</span><br>d';
+    const r = cr(html);
+    assert.equal(r.ok, true);
+    assert.equal(r.valeur.compteRendu, html);
+  });
+
+  it("neutralise les balises hors liste blanche", () => {
+    for (const brut of ['<script>alert(1)</script>', '<u onclick="x">a', '<span style="color:red">a']) {
+      const r = cr(brut);
+      assert.equal(r.ok, true);
+      assert.ok(!/<(script|span style|u onclick)/.test(r.valeur.compteRendu));
+      assert.ok(r.valeur.compteRendu.includes("&lt;"));
+    }
+    assert.equal(cr("<script>x</script>").valeur.compteRendu, "&lt;script&gt;x&lt;/script&gt;");
+  });
+
+  it("refuse une couleur inconnue", () => {
+    assert.equal(cr('<span class="cr-violet">x</span>').ok, false);
+  });
+
+  it("refuse un balisage mal imbrique", () => {
+    assert.equal(cr("<u>abc").ok, false);
+    assert.equal(cr('<u><span class="cr-bleu">x</u></span>').ok, false);
+    assert.equal(cr("x</u>").ok, false);
+  });
+
+  it("calcule la longueur sur le texte visible", () => {
+    assert.equal(cr("<u>" + "x".repeat(500) + "</u>").ok, true);
+    assert.equal(cr("<u>" + "x".repeat(501) + "</u>").ok, false);
+  });
+
+  it("echappe & et convertit les sauts de ligne", () => {
+    assert.equal(cr("R&D").valeur.compteRendu, "R&amp;D");
+    assert.equal(cr("a\nb").valeur.compteRendu, "a<br>b");
+  });
+
+  it("rend une chaine vide pour un contenu sans texte", () => {
+    assert.equal(cr("<br>").valeur.compteRendu, "");
+    assert.equal(cr("   ").valeur.compteRendu, "");
+    assert.equal(cr("<u> </u><br>").valeur.compteRendu, "");
+  });
+
+  it("refuse une chaine brute de plus de 5000 caracteres", () => {
+    const r = cr("<u></u>".repeat(800));
+    assert.equal(r.ok, false);
+    assert.ok(r.erreurs.includes("compteRendu : contenu trop volumineux"));
+  });
+});

@@ -47,3 +47,20 @@ describe("api", () => {
     assert.equal(handleDelete(premier.state, 1).status, 404);
   });
 });
+
+describe("api : compte rendu enrichi", () => {
+  const HTML = 'Voir <u>seuil</u> <span class="cr-rouge">urgent</span>';
+
+  it("enregistre le compte rendu et le renvoie", () => {
+    const r = handleCreate(emptyState(), { ...VALIDE, compteRendu: HTML });
+    assert.equal(r.status, 201);
+    assert.equal(r.body.compteRendu, HTML);
+    assert.equal(handleGet(r.state, 1).body.compteRendu, HTML);
+  });
+
+  it("enregistre echappe un compte rendu avec balise non autorisee", () => {
+    const r = handleCreate(emptyState(), { ...VALIDE, compteRendu: "<img src=x onerror=alert(1)>" });
+    assert.equal(r.status, 201);
+    assert.equal(r.body.compteRendu, "&lt;img src=x onerror=alert(1)&gt;");
+  });
+});
